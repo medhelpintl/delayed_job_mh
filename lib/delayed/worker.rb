@@ -108,7 +108,7 @@ module Delayed
       queries << "DROP TABLE IF EXISTS delayed_job_updates"
       queries << "CREATE TEMPORARY TABLE delayed_job_updates(id int(11), failed_at datetime, attempts int(11), last_error text, run_at datetime, PRIMARY KEY(id))"
       inserts = jobs.collect do |j| 
-        last_error = j.last_error.gsub(/\\/, '\&\&').gsub(/'/, "''")
+        last_error = ActiveRecord::Base.send :sanitize_sql_array, ["%s", j.last_error]
         failed_at = j.failed_at ? "'#{j.failed_at.to_s(:db)}'" : "null"
         "(#{j.id}, #{failed_at}, #{j.attempts}, '#{last_error}', '#{j.run_at}')" 
       end.join(",")
