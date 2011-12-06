@@ -11,6 +11,14 @@ module Delayed
 
         before_save :set_default_run_at
 
+        def self.before_fork
+          ::ActiveRecord::Base.clear_all_connections!
+        end
+
+        def self.after_fork
+          ::ActiveRecord::Base.establish_connection
+        end
+
         # Find a few candidate jobs to run (in case some immediately get locked by others).
         def self.next_available_batch(priority, batch_size)
           jobs = self.where(["priority = ? AND failed_at is null AND run_at < ?", priority, Time.now]).limit(batch_size).order("run_at asc").all
