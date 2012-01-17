@@ -48,6 +48,7 @@ module Delayed
     def initialize(options={})
       @quiet = !options.has_key?(:quiet) || options[:quiet]
       self.class.batch_size = options.has_key?(:batch_size) ? options[:batch_size] : DEFAULT_BATCH_SIZE
+      self.class.execute_single_batch = options.has_key?(:single_batch) && options[:single_batch]
       self.class.priority = options[:priority] if options.has_key?(:priority)
       self.class.sleep_delay = options[:sleep_delay] if options.has_key?(:sleep_delay)
     end
@@ -82,7 +83,7 @@ module Delayed
 
         count = result.sum
 
-        break if $exit
+        break if $exit || self.class.execute_single_batch
 
         if count.zero?
           say "Nothing more to do."

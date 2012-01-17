@@ -35,6 +35,9 @@ module Delayed
         opts.on('--verbose', 'Be verbose with output') do |n|
           @options[:quiet] = false
         end
+        opts.on('--single-batch', 'Process only one batch') do |n|
+          @options[:single_batch] = true
+        end
         opts.on('-n', '--number_of_workers=workers', "Number of unique workers to spawn") do |worker_count|
           @worker_count = worker_count.to_i rescue 1
         end

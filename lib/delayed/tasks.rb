@@ -6,6 +6,6 @@ namespace :jobs do
 
   desc "Start a delayed_job worker."
   task :work => :environment do
-    Delayed::Worker.new(:priority => ENV['PRIORITY'], :batch_size => ENV['BATCH_SIZE'].to_i, :sleep_delay => (ENV['SLEEP_DELAY']||300).to_i, :verbose => (ENV['VERBOSE']=='true')).start
+    Delayed::Worker.new(:priority => ENV['PRIORITY'], :batch_size => ENV['BATCH_SIZE'].to_i, :single_batch => (env['SINGLE_BATCH']=='1'), :sleep_delay => (ENV['SLEEP_DELAY']||300).to_i, :verbose => (ENV['VERBOSE']=='true')).start
   end
 end
