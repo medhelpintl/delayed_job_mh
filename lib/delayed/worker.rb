@@ -8,12 +8,13 @@ module Delayed
   class Worker
     DEFAULT_BATCH_SIZE = 500
 
-    cattr_accessor :priority, :batch_size, :max_attempts, :max_run_time, :default_priority, :sleep_delay, :logger, :delay_jobs
+    cattr_accessor :priority, :batch_size, :max_attempts, :max_run_time, :default_priority, :sleep_delay, :logger, :delay_jobs, :execute_single_batch
     self.sleep_delay = 2.minutes
     self.max_attempts = 5
     self.max_run_time = 4.hours
     self.default_priority = 0
     self.delay_jobs = true
+    self.execute_single_batch = false
 
     # By default failed jobs are destroyed after too many attempts. If you want to keep them around
     # (perhaps to inspect the reason for the failure), set this to false.
